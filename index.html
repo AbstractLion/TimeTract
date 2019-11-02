@@ -1,0 +1,198 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <link href="https://fonts.googleapis.com/css?family=Poppins:900&display=swap" rel="stylesheet">
+    <style>
+      body {
+        margin: 0;
+      }
+
+      #rankings {
+        margin: 20px;
+        display: grid;
+        height: 50vh;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-gap: 20px;
+      }
+
+      .ranking-box {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 30px 2fr 2fr;
+        position: relative;
+        height: 100%;
+        width: 100%;
+      }
+
+      .small-ranking-box {
+        display: grid;
+        grid-template-columns: 1fr 2fr 2fr;
+        grid-template-rows: 1fr 1fr;
+      }
+
+      .small-ranking-box .profile-pic {
+        grid-column: 2 / span 1;
+        grid-row: 1 / span 2;
+      }
+
+      .small-ranking-box .rank-number {
+        grid-column: 1 / span 1;
+        grid-row: 1 / span 1;
+      }
+
+      .small-ranking-box .profile-name {
+        grid-column: -2 / span 1;
+        grid-row: 1 / span 1;
+        font-weight: bold;
+        text-align: center;
+        font-family: Poppins;
+      }
+
+      .small-ranking-box .profile-pulse {
+        grid-column: 1 / span 1;
+        grid-row: 2 / span 1;
+      }
+
+      .small-ranking-box .profile-desc {
+        grid-column: 3 / span 2;
+        grid-row: 1 / -1;
+        text-align: center;
+      }
+
+      .ranking-box, .small-ranking-box {
+        box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.5);
+      }
+      
+      .profile-pic {
+        width: 100%;
+        height: auto;
+        align-self: center;
+        justify-self: center;
+      }
+
+      .profile-pic > img {
+        border-radius: 50%;
+        width: 100%;
+        height: auto;
+        
+      }
+
+      .rank-number, .profile-pulse {
+        font-weight: bold;
+        font-family: Poppins;
+        text-align: center;
+        align-self: center;
+      }
+
+      .ranking-box .profile-pic {
+        grid-row: 2 / span 1;
+        grid-column: 2 / 4;
+      }
+
+      .ranking-box .profile-desc {
+        grid-row: 3 / span 1;
+        grid-column: 2 / 4;
+        text-align: center;
+      }
+
+      .ranking-box .profile-name {
+        grid-column: 1 / -1;
+        grid-row: 1 / span 1;
+        height: 20px;
+        font-size: 8vw;
+        text-align: center;
+        font-weight: bold;
+        font-family: Poppins;
+      }
+
+      .ranking-box:first-child {
+        grid-column: 1 / span 1;
+        grid-row: 1 / -1;
+      }
+
+      .ranking-box .rank-number {
+        grid-column: 1 / span 1;
+        grid-row: 2 / span 1;
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <div id="rankings">
+        <div class="ranking-box">
+          <div class="profile-name">
+            Alpha
+          </div>
+          <div class="rank-number">
+            #1
+          </div>
+          <div class="profile-pic">
+            <img src="profile-pic-1.png" />
+          </div>
+          <div class="profile-pulse">
+            99
+          </div>
+          <div class="profile-desc">
+            
+          </div>
+        </div>
+        <div class="small-ranking-box">
+          <div class="profile-name">
+            Bravo
+          </div>
+          <div class="rank-number">
+            #2
+          </div>
+          <div class="profile-pic">
+            <img src="profile-pic-2.png" />
+          </div>
+          <div class="profile-pulse">
+            94
+          </div>
+          <div class="profile-desc">
+            <p>B is for Bravo</p>
+          </div>
+        </div>
+
+        <div class="small-ranking-box">
+          <div class="profile-name">
+            Charlie
+          </div>
+          <div class="rank-number">
+            #3
+          </div>
+          <div class="profile-pic">
+            <img src="profile-pic-3.png" />
+          </div>
+          <div class="profile-pulse">
+            87
+          </div>
+          <div class="profile-desc">
+            
+          </div>
+        </div>
+
+        <div class="small-ranking-box">
+          <div class="profile-name">
+            Delta
+          </div>
+          <div class="rank-number">
+            #4
+          </div>
+          <div class="profile-pic">
+            <img src="profile-pic-4.png" />
+          </div>
+          <div class="profile-pulse">
+            84
+          </div>
+          <div class="profile-desc">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
