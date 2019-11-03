@@ -6,10 +6,16 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:900&display=swap" rel="stylesheet">
     <style>
       .pie > svg {
-        width: 100px; height: 100px;
+        width: 50px; height: 50px;
         transform: rotate(-90deg);
         background: yellowgreen;
         border-radius: 50%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin-left: 34px;
+        margin-top: -10px;
+        z-index: -1;
       }
 
       body {
@@ -36,6 +42,10 @@
         align-items: top;
       }
 
+      .ranking-box svg {
+        margin-left: 49px;
+      }      
+
       .small-ranking-box {
         display: grid;
         grid-template-columns: 20% 40% 40%;
@@ -47,13 +57,6 @@
         grid-row: 1 / span 3;
         position: relative;
         
-      }
-
-      .pie {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        z-index: -1;
       }
 
       .distracting-activities, .productive-activities {
@@ -68,9 +71,14 @@
         font-family: Poppins;
       }
 
+      #lion-pulse, #dragon-pulse {
+        color: white;
+      }
+
       .small-ranking-box .profile-pulse {
         grid-column: 1 / span 1;
         grid-row: 3 / span 1;
+        position: relative;
       }
 
       .small-ranking-box .profile-desc {
@@ -83,6 +91,10 @@
         box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.5);
       }
       
+      .ranking-box .profile-pulse {
+        position: relative;
+      }
+
       .profile-pic {
         width: 100%;
         height: auto;
@@ -360,8 +372,8 @@
     $.post("getdata.php", {url: dsfURL(dragonKey)}, function(data) {
       data = JSON.parse(data)[0];
       $('#dragon-pulse').html(data.productivity_pulse);
-      let pie = createPie(data.very_distracting_percentage, data.distracting_percentage, data.neutral_percentage, data.productive_percentage, data.very_productive_percentage);
-      // $('#dragon-profile').append(pie);
+      let pie = createPie(data.very_distracting_percentage, data.distracting_percentage, data.neutral_percentage, data.productive_percentage, data.very_productive_percentage, data.productivity_pulse);
+      $('#dragon-pulse').append(pie);
     });
 
     $.post("getdata.php", {url: adURL(lionKey)}, function(data) {
@@ -372,14 +384,14 @@
     $.post("getdata.php", {url: dsfURL(lionKey)}, function(data) {
       data = JSON.parse(data)[0];
       $('#lion-pulse').html(data.productivity_pulse);
-      let pie = createPie(data.very_distracting_percentage, data.distracting_percentage, data.neutral_percentage, data.productive_percentage, data.very_productive_percentage);
-      // $('#lion-profile').append(pie);
+      let pie = createPie(data.very_distracting_percentage, data.distracting_percentage, data.neutral_percentage, data.productive_percentage, data.very_productive_percentage, data.productivity_pulse);
+      $('#lion-pulse').append(pie);
       
     });
 
     function $$(selector, context) { context = context || document; var elements = context.querySelectorAll(selector); return Array.prototype.slice.call(elements); }
 
-  function createPie(very_distracted, distracted, neutral, productive, very_productive) {
+  function createPie(very_distracted, distracted, neutral, productive, very_productive, pulse) {
     var pie = $('<div class="pie"></div>');
     var values = [very_distracted, distracted, neutral, productive, very_productive];
     var NS = "http://www.w3.org/2000/svg";
@@ -405,8 +417,14 @@
       svg.prepend(title);
       svg.prepend(circle);
     }
+    var text = document.createElementNS(NS, 'text');
+    text.setAttribute("x", 8);
+    text.setAttribute("y", 8);
+    text.setAttribute("fill", "white");
+    text.setAttribute("transform", "rotate(90)");
+    text.innerHTML = pulse;
+    // svg.append(text);
     pie.append(svg);
-    $('body').append(pie);
     
     return pie;
   }
