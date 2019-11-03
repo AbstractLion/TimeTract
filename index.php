@@ -1,4 +1,3 @@
-<?php header('Access-Control-Allow-Origin: *'); ?>
 <!DOCTYPE HTML>
 <html>
   <head>
@@ -23,16 +22,17 @@
       #rankings {
         margin: 20px;
         display: grid;
-        max-height: 100px;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr;
         grid-gap: 20px;
+        min-height: 95vh;
       }
 
       .ranking-box {
         display: grid;
         grid-template-columns: 25% 25% 25% 25%;
-        grid-template-rows: 70px 2fr 1fr 1fr;
+        grid-template-rows: 75px 1fr 1fr 1fr;
+        grid-row: 1 / -1;
         position: relative;
         height: 100%;
         width: 100%;
@@ -88,6 +88,7 @@
         position: relative;
       }
 
+
       .profile-pic {
         width: 100%;
         height: auto;
@@ -135,7 +136,7 @@
         grid-row: 1 / span 1;
         height: 20px;
         margin-top: -45px;
-        font-size: 35px;
+        font-size: 20px;
         text-align: center;
         font-weight: bold;
         align-self: center;
@@ -169,7 +170,7 @@
         display: none;
       }
 
-      .ranking-box:first-child {
+      #dragon-box {
         grid-column: 1 / span 1;
         grid-row: 1 / -1;
       }
@@ -224,13 +225,76 @@
         min-width: 70px;
       }
 
+      .small-ranking-box .expand-plus {
+        height: 25px;
+        width: 25px;
+        align-self: end;
+        justify-self: end;
+        background-color: lightgreen;
+        grid-row: 3 / span 1;
+        grid-column: 3 / span 1;
+        text-align: center;
+        position: relative;
+        border-width: 2px 0px 0px 2px;
+        border-style: solid;
+        border-color: black;
+      }
+
+      .expand-plus:hover {
+        cursor: pointer;
+      }
+
+      .ranking-box .expand-plus {
+        height: 25px;
+        width: 25px;
+        align-self: end;
+        justify-self: end;
+        background-color: lightgreen;
+        grid-row: -2 / span 1;
+        grid-column: -2 / span 1;
+        text-align: center;
+        position: relative;
+        border-width: 2px 0px 0px 2px;
+        border-style: solid;
+        border-color: black;
+      }
+
+      
+
+      .ranking-box .plus-sign {
+        font-size: 20px;
+        color: black;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .expand-plus .plus-sign {
+        font-size: 20px;
+        color: black;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .small-ranking-box #lion-distracting-activities, .small-ranking-box #lion-productive-activities {
+        display: none;
+      }
       
     </style>
   </head>
   <body>
     <div id="content">
       <div id="rankings">
-        <div class="ranking-box">
+        <div class="ranking-box" id="dragon-box">
           <div class="profile-name">
             Dragon He<br/>(@AbstractUltra)
           </div>
@@ -249,7 +313,7 @@
             <h1 class="dist-header">Most Distracting Activities</h1>
           </div>
         </div>
-        <div class="small-ranking-box">
+        <div class="small-ranking-box" id="lion-box">
           <div class="profile-name">
             Leon Si<br/>(@leonzalion)
           </div>
@@ -262,16 +326,17 @@
           </div>
           <div class="profile-pulse" id="lion-pulse"></div>
           <div class="productive-activities" id="lion-productive-activities">
-            
+            <h1 class="prod-header">Most Productive Activities</h1>
           </div>
           <div class="distracting-activities" id="lion-distracting-activities">
-            
+            <h1 class="dist-header">Most Distracting Activities</h1>
           </div>
-          <div class="expand-arrow" id="lion-expand-arrow">
+          <div class="expand-plus" id="lion-expand-arrow">
+            <span class="plus-sign">+</span>
           </div>
         </div>
 
-        <div class="small-ranking-box">
+        <div class="small-ranking-box" id="third-box">
           <div class="profile-name">
             ---
           </div>
@@ -290,7 +355,7 @@
           </div>
         </div>
 
-        <div class="small-ranking-box">
+        <div class="small-ranking-box" id="fourth-box">
           <div class="profile-name">
             ---
           </div>
@@ -313,7 +378,6 @@
   <script>
     function dsfURL(key) {
       var url = `https://www.rescuetime.com/anapi/daily_summary_feed?key=${key}`;
-      console.log(url);
       return url;
     }
     function adURL(key) {
@@ -323,6 +387,7 @@
       var yesterdayEnd = formatDate(new Date(new Date().toDateString()));
       var url = 'https://www.rescuetime.com/anapi/data?key=' + key +
       '&restrict_begin=' + yesterdayStart + '&restrict_end=' + yesterdayEnd + '&format=json';
+      console.log(url);
       return url;
     }
     function formatDate(d) {
@@ -330,7 +395,19 @@
     }
     function formatTime(t) {
       var f = Math.floor;
-      return (t > 3600 ? "" + f(t / 3600) + "h " : "") + f(t % 3600 / 60) + "m";
+      var s = ""
+      if (t > 3600) { // more than an hour
+        s += "" + f(t / 3600) + "h ";
+        t -= 3600 * f(t / 3600);
+      }
+      if (t > 60) { // more than a minute
+        s += "" + f(t / 60) + "m ";
+        t -= 60 * f(t / 60);
+      }
+      if (t > 0) { // more than a second
+        s += "" + f(t) + "s ";
+      }
+      return s;
     }
 
     var dragonKey = "B63vExwqbvjw8Mqop2yeWIQcYlMQUOudDscN2V0w";
@@ -342,7 +419,7 @@
       prod = data.rows.filter(arr => arr[5] > 0);
       dist = data.rows.filter(arr => arr[5] < 0);
       var myList = $('<ul></ul>');
-      for (let i = 0; i < 3 && i < prod.length; ++i) {
+      for (let i = 0; i < 5 && i < prod.length; ++i) {
         var myLi = $('<li></li>');
         myLi.html(`${prod[i][3]} - ${formatTime(prod[i][1])}`)
         myList.append(myLi);
@@ -350,7 +427,7 @@
       $('#dragon-productive-activities').append(myList);
 
       myList = $('<ul></ul>');
-      for (let i = 0; i < 3 && i < dist.length; ++i) {
+      for (let i = 0; i < 4 && i < dist.length; ++i) {
         var myLi = $('<li></li>');
         myLi.html(`${dist[i][3]} - ${formatTime(dist[i][1])}`);
         myList.append(myLi);
@@ -366,7 +443,23 @@
 
     $.post("getdata.php", {url: adURL(lionKey)}, function(data) {
       data = JSON.parse(data);
-      
+      prod = data.rows.filter(arr => arr[5] > 0);
+      dist = data.rows.filter(arr => arr[5] < 0);
+      var myList = $('<ul></ul>');
+      for (let i = 0; i < 5 && i < prod.length; ++i) {
+        var myLi = $('<li></li>');
+        myLi.html(`${prod[i][3]} - ${formatTime(prod[i][1])}`)
+        myList.append(myLi);
+      }
+      $('#lion-productive-activities').append(myList);
+
+      myList = $('<ul></ul>');
+      for (let i = 0; i < 5 && i < dist.length; ++i) {
+        var myLi = $('<li></li>');
+        myLi.html(`${dist[i][3]} - ${formatTime(dist[i][1])}`);
+        myList.append(myLi);
+      }
+      $('#lion-distracting-activities').append(myList);
     });
 
     $.post("getdata.php", {url: dsfURL(lionKey)}, function(data) {
@@ -413,6 +506,22 @@
     
     return svg;
   }
+
+  $('.expand-plus').click(function() {
+    if ($('#lion-box .expand-plus').html() != '-') {
+      $('#lion-box').removeClass('small-ranking-box');
+      $('#lion-box').addClass('ranking-box');
+      $('#third-box').hide();
+      $('#fourth-box').hide();
+      $('#lion-box .expand-plus').html('-').css('font-size', '20px');
+    } else {
+      $('#lion-box').addClass('small-ranking-box');
+      $('#lion-box').removeClass('ranking-box');
+      $('#third-box').show();
+      $('#fourth-box').show();
+      $('#lion-box .expand-plus').html('+').css('font-size', '20px');
+    }
+  });
 
   </script>
   </body>
