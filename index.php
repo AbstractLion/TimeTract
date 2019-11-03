@@ -5,17 +5,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Poppins:900&display=swap" rel="stylesheet">
     <style>
-      .pie > svg {
+      .pie {
         width: 50px; height: 50px;
         transform: rotate(-90deg);
-        background: yellowgreen;
+        background: white;
         border-radius: 50%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        margin-left: 34px;
-        margin-top: -10px;
+        position: relative;
         z-index: -1;
+        margin: 5px;
       }
 
       body {
@@ -41,10 +38,6 @@
         width: 100%;
         align-items: top;
       }
-
-      .ranking-box svg {
-        margin-left: 49px;
-      }      
 
       .small-ranking-box {
         display: grid;
@@ -248,9 +241,7 @@
           <div class="profile-pic" id="dragon-profile">
             <img src="abstractultra.png" />
           </div>
-          <div class="profile-pulse" id="dragon-pulse">
-            --
-          </div>
+          <div class="profile-pulse" id="dragon-pulse"></div>
           <div class="productive-activities" id="dragon-productive-activities">
             <h1 class="prod-header">Most Productive Activities</h1>
           </div>
@@ -269,9 +260,7 @@
           <div class="profile-pic" id="lion-profile">
             <img src="lion.png" />
           </div>
-          <div class="profile-pulse" id="lion-pulse">
-            --
-          </div>
+          <div class="profile-pulse" id="lion-pulse"></div>
           <div class="productive-activities" id="lion-productive-activities">
             
           </div>
@@ -371,7 +360,6 @@
 
     $.post("getdata.php", {url: dsfURL(dragonKey)}, function(data) {
       data = JSON.parse(data)[0];
-      $('#dragon-pulse').html(data.productivity_pulse);
       let pie = createPie(data.very_distracting_percentage, data.distracting_percentage, data.neutral_percentage, data.productive_percentage, data.very_productive_percentage, data.productivity_pulse);
       $('#dragon-pulse').append(pie);
     });
@@ -383,7 +371,6 @@
 
     $.post("getdata.php", {url: dsfURL(lionKey)}, function(data) {
       data = JSON.parse(data)[0];
-      $('#lion-pulse').html(data.productivity_pulse);
       let pie = createPie(data.very_distracting_percentage, data.distracting_percentage, data.neutral_percentage, data.productive_percentage, data.very_productive_percentage, data.productivity_pulse);
       $('#lion-pulse').append(pie);
       
@@ -392,10 +379,10 @@
     function $$(selector, context) { context = context || document; var elements = context.querySelectorAll(selector); return Array.prototype.slice.call(elements); }
 
   function createPie(very_distracted, distracted, neutral, productive, very_productive, pulse) {
-    var pie = $('<div class="pie"></div>');
     var values = [very_distracted, distracted, neutral, productive, very_productive];
     var NS = "http://www.w3.org/2000/svg";
     var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('class', 'pie');
     svg.setAttribute("viewBox", "0 0 32 32");
     var colors = ['red', 'lightred', 'lightgrey', 'lightblue', 'blue'];
     for (let i = 0, sum = 0; i < 5; ++i) {
@@ -409,24 +396,22 @@
       circle.setAttribute("fill", "rgba(0,0,0,0)");
       circle.setAttribute("stroke", colors[i]);
       circle.setAttribute("stroke-dasharray", "" + sum + " 100");
-
       circle.setAttribute("stroke-width", "32px");
       
-      title.textContent = pie.textContent;
-      pie.textContent = '';
       svg.prepend(title);
       svg.prepend(circle);
     }
     var text = document.createElementNS(NS, 'text');
-    text.setAttribute("x", 8);
-    text.setAttribute("y", 8);
+    text.setAttribute("x", 4);
+    text.setAttribute("textLength", 24);
+    text.setAttribute("y", -8);
     text.setAttribute("fill", "white");
     text.setAttribute("transform", "rotate(90)");
     text.innerHTML = pulse;
-    // svg.append(text);
-    pie.append(svg);
+
+    svg.append(text);
     
-    return pie;
+    return svg;
   }
 
   </script>
