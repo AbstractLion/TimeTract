@@ -410,8 +410,8 @@
       return s;
     }
 
-    var dragonKey = "B63vExwqbvjw8Mqop2yeWIQcYlMQUOudDscN2V0w";
-    var lionKey = "B63SD5uLHof2HskzdelSGP5Tp2d5QyGdE8J0ELSQ";
+    var dragonKey = "";
+    var lionKey = "";
 
     var dsf = 
     $.post("getdata.php", {url: adURL(dragonKey)}, function(data) {
